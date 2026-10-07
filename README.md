@@ -1,2 +1,0 @@
-# applock
-CtoA builds

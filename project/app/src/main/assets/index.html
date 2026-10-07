@@ -1,0 +1,348 @@
+<!doctype html
+<html lang="en"
+<head
+<meta charset="utf-8"
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"
+<titleApp Lock 88</title
+<style
+:root{
+  --bg:#0e0e10;
+  --surface:#17171a;
+  --surface-2:#1f1f24;
+  --line:rgba(245,241,232,.07);
+  --text:#f5f1e8;
+  --text-dim:#8a8678;
+  --text-faint:#4a4842;
+  --gold:#e8b923;
+  --green:#7aab5c;
+  --red:#d43d2e;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{
+  background:var(--bg);color:var(--text);
+  font-family:-apple-system,'Segoe UI',Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+body{padding:0 0 40px}
+
+.head{
+  padding:28px 22px 20px;
+  border-bottom:1px solid var(--line);
+  text-align:center;
+}
+.mark{
+  font-family:Georgia,serif;font-style:italic;
+  font-size:56px;line-height:1;
+  color:var(--gold);letter-spacing:-.05em;
+  margin-bottom:6px;
+}
+.title{font-size:17px;font-weight:600;margin-bottom:3px}
+.sub{
+  font-size:10.5px;color:var(--text-faint);
+  letter-spacing:.15em;text-transform:uppercase;
+}
+
+.status{
+  margin:16px 22px 0;
+  padding:14px 16px;
+  border-radius:12px;
+  display:flex;align-items:center;gap:12px;
+  font-size:13.5px;font-weight:500;
+  cursor:pointer;
+}
+.status.on{background:rgba(122,171,92,.12);color:var(--green);border:1px solid rgba(122,171,92,.3)}
+.status.off{background:rgba(212,61,46,.12);color:var(--red);border:1px solid rgba(212,61,46,.3)}
+.status .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:currentColor;flex-shrink:0;
+}
+.status .txt{flex:1}
+.status .arrow{color:var(--text-faint);font-size:16px}
+
+.section{margin-top:20px;padding:0 22px}
+.section-h{
+  font-size:10.5px;color:var(--text-faint);
+  letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:10px;font-weight:600;
+  display:flex;align-items:center;gap:12px;
+}
+.section-h::after{
+  content:'';flex:1;height:1px;background:var(--line);
+}
+
+.pin-box{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:16px;margin-bottom:8px;
+}
+.pin-input{
+  width:100%;height:48px;padding:0 14px;
+  background:var(--surface-2);border:1px solid var(--line);
+  border-radius:11px;color:var(--text);
+  font-size:18px;font-family:monospace;letter-spacing:.3em;
+  text-align:center;outline:none;
+}
+.pin-input:focus{border-color:var(--gold)}
+.pin-btn{
+  width:100%;height:46px;margin-top:10px;
+  background:var(--gold);color:var(--bg);
+  border:0;border-radius:11px;
+  font-size:14.5px;font-weight:700;cursor:pointer;
+}
+.pin-btn:active{transform:scale(.98)}
+.pin-hint{
+  font-size:11px;color:var(--text-faint);
+  text-align:center;margin-top:8px;
+}
+
+.search{
+  width:100%;height:42px;padding:0 14px;margin-bottom:10px;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:11px;color:var(--text);
+  font-size:14px;outline:none;
+}
+.search:focus{border-color:var(--gold)}
+
+.app-list{
+  display:flex;flex-direction:column;gap:2px;
+}
+.app-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;
+  background:var(--surface);
+  border-radius:10px;
+  transition:background .15s;
+}
+.app-item:active{background:var(--surface-2)}
+.app-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,#2a2a30,#1a1a20);
+  display:grid;place-items:center;
+  font-family:Georgia,serif;font-style:italic;
+  font-size:17px;color:var(--gold);
+  flex-shrink:0;
+}
+.app-meta{flex:1;min-width:0}
+.app-label{
+  font-size:14px;font-weight:500;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.app-pkg{
+  font-size:10.5px;color:var(--text-faint);
+  font-family:monospace;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  margin-top:2px;
+}
+.switch{
+  width:44px;height:26px;border-radius:13px;
+  background:#2a2a30;border:1px solid var(--line);
+  position:relative;cursor:pointer;
+  flex-shrink:0;transition:background .25s;
+}
+.switch::after{
+  content:'';position:absolute;top:2px;left:2px;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--text-faint);
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s;
+}
+.switch.on{background:rgba(232,185,35,.2);border-color:rgba(232,185,35,.5)}
+.switch.on::after{transform:translateX(18px);background:var(--gold)}
+
+.empty{
+  padding:40px 20px;text-align:center;
+  color:var(--text-faint);font-size:13px;
+}
+
+.footer{
+  margin-top:40px;padding:24px 22px 0;
+  border-top:1px solid var(--line);
+  text-align:center;
+  font-family:monospace;font-size:10px;
+  color:var(--text-faint);letter-spacing:.06em;line-height:1.9;
+}
+.footer b{color:var(--text-dim);font-weight:600}
+.footer a{color:var(--gold);text-decoration:none}
+</style
+</head
+<body
+
+<div class="head"
+  <div class="mark"88</div
+  <div class="title"App Lock 88</div
+  <div class="sub"Simple · Effective</div
+</div
+
+<div class="status off" id="status" onclick="openAccessibility()"
+  <div class="dot"</div
+  <div class="txt" id="statusText"Service disabled — tap to enable</div
+  <div class="arrow"›</div
+</div
+
+<div class="section"
+  <div class="section-h"PIN</div
+  <div class="pin-box" id="pinBox"
+    <input class="pin-input" id="pinInput" type="tel" inputmode="numeric"
+           pattern="[0-9]*" maxlength="8" placeholder="••••" autocomplete="off"
+    <button class="pin-btn" id="pinBtn"Set PIN</button
+    <div class="pin-hint" id="pinHint"At least 4 digits. Stored as hash. Never sent anywhere.</div
+  </div
+</div
+
+<div class="section"
+  <div class="section-h"Lock apps</div
+  <input class="search" id="search" type="text" placeholder="Search apps..." autocomplete="off"
+  <div class="app-list" id="appList"
+    <div class="empty"Loading...</div
+  </div
+</div
+
+<div class="footer"
+  <bApp Lock 88</b<br
+  Copyright &copy; 2026 MC88<br
+  <a href="mailto:mohamed005cheikh@gmail.com"mohamed005cheikh@gmail.com</a<br
+  MIT License
+</div
+
+<script
+(function(){
+'use strict';
+
+var $ = function(id){ return document.getElementById(id); };
+
+var BRIDGE = (typeof window.AndroidBridge !== 'undefined') ? window.AndroidBridge : null;
+var allApps = [];
+var locked = new Set();
+
+function bridgeCall(method){
+  if(!BRIDGE) return null;
+  var fn = BRIDGE[method];
+  if(typeof fn !== 'function') return null;
+  try {
+    var args = Array.prototype.slice.call(arguments, 1);
+    return fn.apply(BRIDGE, args);
+  } catch(e){ return null; }
+}
+
+function escapeHtml(s){
+  return String(s||'').replace(/[&<"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+function initial(label){
+  var t = String(label||'').trim();
+  return t ? t[0].toUpperCase() : '?';
+}
+
+/* ---------- service status ---------- */
+function refreshServiceStatus(){
+  var enabled = bridgeCall('isServiceEnabled');
+  var el = $('status');
+  var txt = $('statusText');
+  if(enabled){
+    el.className = 'status on';
+    txt.textContent = 'Service enabled — apps will be locked';
+  } else {
+    el.className = 'status off';
+    txt.textContent = 'Service disabled — tap to enable';
+  }
+}
+window.onServiceCheck = refreshServiceStatus;
+
+function openAccessibility(){
+  bridgeCall('openAccessibilitySettings');
+}
+
+/* ---------- PIN ---------- */
+function refreshPin(){
+  var has = bridgeCall('hasPin');
+  if(has){
+    $('pinBtn').textContent = 'Change PIN';
+    $('pinHint').textContent = 'PIN is set. Enter new one to change it.';
+  } else {
+    $('pinBtn').textContent = 'Set PIN';
+    $('pinHint').textContent = 'At least 4 digits. Stored as hash. Never sent anywhere.';
+  }
+}
+
+function savePin(){
+  var v = $('pinInput').value.trim();
+  if(v.length < 4){
+    $('pinInput').focus();
+    return;
+  }
+  bridgeCall('setPin', v);
+  $('pinInput').value = '';
+  refreshPin();
+  $('pinHint').textContent = 'PIN saved.';
+}
+
+/* ---------- app list ---------- */
+function refreshApps(){
+  var raw = bridgeCall('getApps');
+  try { allApps = raw ? JSON.parse(raw) : []; }
+  catch(e){ allApps = []; }
+
+  var rawL = bridgeCall('getLocked');
+  try {
+    var arr = rawL ? JSON.parse(rawL) : [];
+    locked = new Set(arr);
+  } catch(e){ locked = new Set(); }
+
+  renderApps();
+}
+
+function renderApps(){
+  var q = $('search').value.trim().toLowerCase();
+  var list = allApps.filter(function(a){
+    if(!q) return true;
+    return (a.label||'').toLowerCase().indexOf(q) !== -1 ||
+           (a.pkg||'').toLowerCase().indexOf(q) !== -1;
+  });
+
+  var box = $('appList');
+  if(!list.length){
+    box.innerHTML = '<div class="empty"No apps found.</div';
+    return;
+  }
+
+  box.innerHTML = list.map(function(a){
+    var on = locked.has(a.pkg);
+    return '<div class="app-item"'
+      +    '<div class="app-icon"' + escapeHtml(initial(a.label)) + '</div'
+      +    '<div class="app-meta"'
+      +      '<div class="app-label"' + escapeHtml(a.label) + '</div'
+      +      '<div class="app-pkg"' + escapeHtml(a.pkg) + '</div'
+      +    '</div'
+      +    '<div class="switch' + (on ? ' on' : '') + '" data-pkg="' + escapeHtml(a.pkg) + '"</div'
+      +  '</div';
+  }).join('');
+
+  Array.prototype.forEach.call(box.querySelectorAll('.switch'), function(sw){
+    sw.addEventListener('click', function(){
+      var pkg = sw.getAttribute('data-pkg');
+      var nowOn = !sw.classList.contains('on');
+      sw.classList.toggle('on', nowOn);
+      bridgeCall('setLocked', pkg, nowOn);
+      if(nowOn) locked.add(pkg); else locked.delete(pkg);
+    });
+  });
+}
+
+/* ---------- wire up ---------- */
+document.addEventListener('DOMContentLoaded', function(){
+  refreshServiceStatus();
+  refreshPin();
+  refreshApps();
+
+  $('pinBtn').addEventListener('click', savePin);
+  $('pinInput').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') savePin();
+  });
+  $('search').addEventListener('input', renderApps);
+});
+
+})();
+</script
+</body
+</html
